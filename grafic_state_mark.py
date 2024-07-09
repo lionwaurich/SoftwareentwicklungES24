@@ -52,4 +52,3 @@ while True:
         highlight_state_and_edges(G_de, pos_de, state)
     else:
         print("Zustand nicht gefunden. Bitte versuchen Sie es erneut.")
-Hallo
