@@ -26,10 +26,12 @@ def create_graph(nodes, edges):
 
 def display_graph(G, pos, highlight_node=None):
     plt.figure(figsize=(10, 5))
-    node_colors = 'lightblue' if highlight_node is None else ['red' if node == highlight_node else 'lightblue' for node in G]
-    nx.draw(G, pos, with_labels=True, node_size=3000, node_color=node_colors, font_size=9, font_weight='bold', arrowstyle='-|>', arrowsize=20)
+    node_colors = ['lightblue' if node != highlight_node else 'red' for node in G]
+    edge_colors = ['black' if (u != highlight_node) else 'red' for u, v in G.edges]
+    
+    nx.draw(G, pos, with_labels=True, node_size=3000, node_color=node_colors, edge_color=edge_colors, font_size=9, font_weight='bold', arrowstyle='-|>', arrowsize=20)
     edge_labels = {((u, v)): f"{d['input']} / {d['output']}" for u, v, d in G.edges(data=True)}
-    nx.draw_networkx_edge_labels(G, pos, edge_labels=edge_labels, font_color='red')
+    nx.draw_networkx_edge_labels(G, pos, edge_labels=edge_labels, font_color='red' if highlight_node else 'black')
     plt.title("Zustandsübergangsdiagramm")
     plt.axis('off')
     plt.draw()  # Update the plot instead of show
