@@ -1,4 +1,7 @@
-# Erstellen eines gerichteten Graphen mit deutschen Bezeichnungen
+import matplotlib.pyplot as plt
+import networkx as nx
+
+
 G_de = nx.DiGraph()
 
 # Zustände und Übergänge definieren (übersetzt)
