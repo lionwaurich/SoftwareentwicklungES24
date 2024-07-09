@@ -40,7 +40,7 @@ def display_graph(G, pos, highlight_node=None):
 plt.ion()
 
 # Hauptlogik zum Einlesen der Konfiguration und Darstellen des Graphen
-filename = input("Bitte geben Sie den Dateinamen ein: ")
+filename = input("Bitte geben Sie den Confic Dateinamen ein: ")
 nodes, edges = read_graph_configuration(filename)
 G_de, pos_de = create_graph(nodes, edges)
 
