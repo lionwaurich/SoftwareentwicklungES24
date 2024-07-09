@@ -1,14 +1,17 @@
 import matplotlib.pyplot as plt
 import networkx as nx
+import sys
 
 def read_graph_configuration(filename):
     with open(filename, 'r') as file:
         content = file.read().split('#')
-        nodes_info = content[0].strip().split('\n')
-        edges_info = content[1].strip().split('\n')
+        nodes_info = content[0].strip().split('\n') if len(content) > 0 else []
+        edges_info = content[1].strip().split('\n') if len(content) > 1 else []
     
-    nodes = [tuple(node.split(',')) for node in nodes_info]
-    edges = [tuple(edge.split(',')) for edge in edges_info]
+    nodes = [tuple(node.split(',')) for node in nodes_info if node]
+    edges = [tuple(edge.split(',')) for edge in edges_info if edge]
+    if not nodes_info or not edges_info:
+        raise ValueError("Die Konfigurationsdatei ist nicht korrekt formatiert. Bitte überprüfen Sie die Datei und stellen Sie sicher, dass sie sowohl Knoten- als auch Kanteninformationen enthält, getrennt durch '#'.")
     
     return nodes, edges
 
@@ -28,8 +31,11 @@ def create_graph(nodes, edges):
     return G, pos
 
 # Hauptlogik zum Einlesen der Konfiguration und Darstellen des Graphen
-nodes, edges = read_graph_configuration('graph_config.txt')
+filename = input("Bitte geben Sie den Dateinamen ein: ")
+nodes, edges = read_graph_configuration(filename)
 G_de, pos_de = create_graph(nodes, edges)
+
+
 
 # Zeichnen des Graphen
 plt.figure(figsize=(10, 5))
