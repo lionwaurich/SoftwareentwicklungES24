@@ -36,30 +36,32 @@ def display_graph(G, pos, highlight_node=None):
     nx.draw_networkx_edge_labels(G, pos, edge_labels=edge_labels, font_color='red' if highlight_node else 'black')
     plt.title("Zustandsübergangsdiagramm")
     plt.axis('off')
-    plt.draw()  # Update the plot instead of show
+    plt.draw()  # Update the plot instead of show (bessere Graphen ansicht)
 
 def main():
-    ser = serial.Serial('/dev/ttyAMA0', 115200, timeout=1)  # Anpassen je nach konfiguriertem UART-Gerät
+    ser = serial.Serial('/dev/ttyAMA0', 115200, timeout=1)
     plt.ion()
     
-    filename = "config.txt"  # Standardname der Konfigurationsdatei, kann angepasst werden
+    filename = "config.txt"  # Pfad zur Konfigurationsdatei
     nodes, edges = read_graph_configuration(filename)
     G_de, pos_de = create_graph(nodes, edges)
-
     display_graph(G_de, pos_de)  # Zeige den initialen Graphen ohne Markierungen
-
-    while True:
-        if ser.in_waiting > 0:
-            state = ser.readline().decode('utf-8').strip()
-            if state.lower() == 'q':
-                print("Programm wird beendet.")
-                break
-            elif state in G_de:
-                plt.close()
-                display_graph(G_de, pos_de, highlight_node=state)
-            else:
-                print("Zustand nicht gefunden. Bitte versuchen Sie es erneut.")
-        plt.pause(0.1)  # Kurze Pause, um das Graphenfenster zu aktualisieren
+    
+    try:
+        while True:
+            if ser.in_waiting > 0:
+                state = ser.readline().decode('utf-8').strip()
+                if state.lower() == 'q':
+                    print("Programm wird beendet.")
+                    break
+                elif state in G_de:
+                    plt.close()
+                    display_graph(G_de, pos_de, highlight_node=state)
+                else:
+                    print("Zustand nicht gefunden. Bitte versuchen Sie es erneut.")
+            time.sleep(0.1)  # Kurze Pause, um das Graphenfenster zu aktualisieren
+    finally:
+        ser.close()  # Stelle sicher, dass der serielle Port sauber geschlossen wird
 
 if __name__ == "__main__":
     main()
