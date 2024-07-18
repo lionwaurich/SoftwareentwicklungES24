@@ -29,14 +29,19 @@ def create_graph(nodes, edges):
     
     return G, pos
 
-def display_graph(G, pos, highlight_node=None):
-    plt.clf()  # Clear the current figure
+def display_graph(G, pos, highlight_node=None, highlight_edges=None):
+    plt.clf()  # Clear, damit das aktuelle fenster geschlossen wird
     node_colors = ['lightblue' if node != highlight_node else 'red' for node in G]
-    edge_colors = ['red' if highlight_node and highlight_node == u else 'black' for u, v in G.edges]
+    edge_colors = ['red' if highlight_edges and (u, v) in highlight_edges else 'black' for u, v in G.edges]
     
-    nx.draw(G, pos, with_labels=True, node_size=3000, node_color=node_colors, edge_color=edge_colors, font_size=12, font_weight='bold', arrowstyle='-|>', arrowsize=20)
+    nx.draw(G, pos, with_labels=True, node_size=4000, node_color=node_colors, edge_color=edge_colors, font_size=12, font_weight='bold', arrowstyle='-|>', arrowsize=20)
+    
     edge_labels = {((u, v)): f"{d['input']} / {d['output']}" for u, v, d in G.edges(data=True)}
-    nx.draw_networkx_edge_labels(G, pos, edge_labels=edge_labels, font_color='red' if highlight_node else 'black')
+    red_edge_labels = {((u, v)): f"{d['input']} / {d['output']}" for u, v, d in G.edges(data=True) if highlight_edges and (u, v) in highlight_edges}
+    
+    nx.draw_networkx_edge_labels(G, pos, edge_labels=edge_labels, font_color='black')
+    nx.draw_networkx_edge_labels(G, pos, edge_labels=red_edge_labels, font_color='red')
+    
     plt.title("Zustandsübergangsdiagramm")
     plt.axis('off')
     plt.draw()
@@ -59,12 +64,13 @@ def update_graph(frame, G_de, pos_de, q):
             print("Programm wird beendet.")
             plt.close()
         elif state in G_de:
-            display_graph(G_de, pos_de, highlight_node=state)
+            highlight_edges = [(u, v) for u, v in G_de.edges if u == state]
+            display_graph(G_de, pos_de, highlight_node=state, highlight_edges=highlight_edges)
         else:
             print("Zustand nicht gefunden. Bitte versuchen Sie es erneut.")
 
 def main():
-    # Öffnen der seriellen Verbindung
+    # Öffnen der seriellen Verbindung (könnte abweichen bei verschiedenen geräten)
     try:
         ser = serial.Serial('/dev/ttyAMA0', 115200, timeout=1)
         print("Serielle Verbindung geöffnet")
@@ -77,9 +83,9 @@ def main():
     nodes, edges = read_graph_configuration(filename)
     G_de, pos_de = create_graph(nodes, edges)
     
-    # Zeige den initialen Graphen ohne Markierungen
+    # Zeige den Graphen ohne Markierungen zu beginn des PRogrammes
     plt.ion()
-    fig, ax = plt.subplots(figsize=(12, 8))  # Erstelle ein neues Fenster mit größerem Bild
+    fig, ax = plt.subplots(figsize=(16, 10))  # Erstelle eine Ausgabe (größe vllt anpassen bei anderen Bildschirmen 16x20 bsp)
 
     display_graph(G_de, pos_de)
 
@@ -94,7 +100,7 @@ def main():
     try:
         plt.show(block=True)
     finally:
-        ser.close()  # Stelle sicher, dass der serielle Port sauber geschlossen wird
+        ser.close()  # serielle Port sauber schließen
         print("Serielle Verbindung geschlossen")
 
 if __name__ == "__main__":
