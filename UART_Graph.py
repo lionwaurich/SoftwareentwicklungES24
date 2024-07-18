@@ -32,9 +32,9 @@ def create_graph(nodes, edges):
 def display_graph(G, pos, highlight_node=None):
     plt.clf()  # Clear the current figure
     node_colors = ['lightblue' if node != highlight_node else 'red' for node in G]
-    edge_colors = ['red' if highlight_node and highlight_node in [u, v] else 'black' for u, v in G.edges]
+    edge_colors = ['red' if highlight_node and highlight_node == u else 'black' for u, v in G.edges]
     
-    nx.draw(G, pos, with_labels=True, node_size=3000, node_color=node_colors, edge_color=edge_colors, font_size=9, font_weight='bold', arrowstyle='-|>', arrowsize=20)
+    nx.draw(G, pos, with_labels=True, node_size=3000, node_color=node_colors, edge_color=edge_colors, font_size=12, font_weight='bold', arrowstyle='-|>', arrowsize=20)
     edge_labels = {((u, v)): f"{d['input']} / {d['output']}" for u, v, d in G.edges(data=True)}
     nx.draw_networkx_edge_labels(G, pos, edge_labels=edge_labels, font_color='red' if highlight_node else 'black')
     plt.title("Zustandsübergangsdiagramm")
@@ -79,7 +79,7 @@ def main():
     
     # Zeige den initialen Graphen ohne Markierungen
     plt.ion()
-    fig, ax = plt.subplots()  # Erstelle ein neues Fenster
+    fig, ax = plt.subplots(figsize=(12, 8))  # Erstelle ein neues Fenster mit größerem Bild
 
     display_graph(G_de, pos_de)
 
