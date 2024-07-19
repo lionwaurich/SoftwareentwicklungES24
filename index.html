@@ -21,12 +21,17 @@
   <div id="content">Lädt...</div>
   <script>
     fetch('https://raw.githubusercontent.com/lionwaurich/SoftwareentwicklungES24/main/README.md')
-      .then(response => response.text())
+      .then(response => {
+        if (!response.ok) {
+          throw new Error('Netzwerkantwort war nicht ok');
+        }
+        return response.text();
+      })
       .then(text => {
         document.getElementById('content').innerHTML = marked.parse(text);
       })
       .catch(error => {
-        document.getElementById('content').innerHTML = 'Fehler beim Laden der README.md';
+        document.getElementById('content').innerHTML = 'Fehler beim Laden der README.md: ' + error.message;
         console.error('Fehler beim Abrufen der README.md Datei:', error);
       });
   </script>
