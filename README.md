@@ -8,6 +8,6 @@ Das Projekt bietet eine umfassende Lösung für die serielle Kommunikation und e
 Sobald der Graph geöffnet ist, werden die Zustände sichtbar. Folgezustände sind durch markierte Kanten erkennbar, auf denen die Eingaben und Ausgaben stehen. Anschließend geben die Studierenden den nächsten Zustand im Terminal ein. Dieser wird rot markiert, ebenso wie die nächsten möglichen Zustände. Achtet darauf, dass die Eingabe genau der Bezeichnung in den Knoten entspricht (alle Buchstaben groß schreiben).
 
 Viel Spaß und viel Erfolg!
-![PinOut](Figure_3.png)
-![Start](Figure_1.png)
-![neuer Zustand](Figure_2.png)
+![PinOut](/Grafik/Figure_3.png)
+![Start](/Grafik/Figure_1.png)
+![neuer Zustand](/Grafik/Figure_2.png)
