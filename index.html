@@ -2,8 +2,8 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>Markdown Viewer</title>
-  <meta name="description" content="Markdown Viewer Module">
+  <title>README Viewer</title>
+  <meta name="description" content="README Viewer Module">
   <meta name="show-in" content="*">
   <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
   <style>
@@ -11,15 +11,23 @@
       font-family: Arial, sans-serif;
       margin: 20px;
     }
+    #content {
+      max-width: 800px;
+      margin: auto;
+    }
   </style>
 </head>
 <body>
-  <div id="content"></div>
+  <div id="content">Loading...</div>
   <script>
-    fetch('https://raw.githubusercontent.com/lionwaurich/SoftwareentwicklungES24/main/README.md')
+    fetch('https://raw.githubusercontent.com/username/repository-name/main/README.md')
       .then(response => response.text())
       .then(text => {
-        document.getElementById('content').innerHTML = marked(text);
+        document.getElementById('content').innerHTML = marked.parse(text);
+      })
+      .catch(error => {
+        document.getElementById('content').innerHTML = 'Error loading README.md';
+        console.error('Error fetching the README.md file:', error);
       });
   </script>
 </body>
