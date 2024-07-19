@@ -1,22 +1,26 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="description" content="Ein Beispielmodul für Edrys">
-    <meta name="show-in" content="*">
-    <title>Beispielmodul</title>
-    <script src="https://edrys-org.github.io/edrys/module/edrys.js"></script>
+  <meta charset="UTF-8">
+  <title>Markdown Viewer</title>
+  <meta name="description" content="Markdown Viewer Module">
+  <meta name="show-in" content="*">
+  <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 20px;
+    }
+  </style>
 </head>
 <body>
-    <h1>Willkommen zu meinem Beispielmodul!</h1>
-    <script>
-        Edrys.onReady(() => {
-            console.log("Modul ist geladen!");
-        });
-
-        Edrys.onUpdate(() => {
-            console.log("Etwas hat sich in der Klasse geändert");
-        });
-    </script>
+  <div id="content"></div>
+  <script>
+    fetch('example.md')
+      .then(response => response.text())
+      .then(text => {
+        document.getElementById('content').innerHTML = marked(text);
+      });
+  </script>
 </body>
 </html>
