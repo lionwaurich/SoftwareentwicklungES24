@@ -1,0 +1,89 @@
+{
+  "id": "9JIUw7ZWXt2jhOdI",
+  "createdBy": "26u2b8sYfLn6D",
+  "dateCreated": 1716541543809,
+  "name": "UART_State_Machine",
+  "meta": {
+    "logo": "",
+    "description": "Das Ziel des Projektes ist die Visualisierung eines Zustandsautomaten auf einem Raspberry Pi, gesteuert durch Eingaben von einem Arduino. Zustandsänderungen und Übergänge werden grafisch dargestellt, um den aktuellen Status und die möglichen Zustandswechsel in Echtzeit anzuzeigen.",
+    "selfAssign": true,
+    "defaultNumberOfRooms": 0
+  },
+  "members": {
+    "teacher": [
+      "vglq02st0TxY"
+    ],
+    "student": []
+  },
+  "modules": [
+    {
+      "url": "https://edrys-labs.github.io/module-station-stream/index.html",
+      "config": "",
+      "studentConfig": "",
+      "teacherConfig": "",
+      "stationConfig": {
+        "video": true,
+        "audio": false,
+        "video_source": "/dev/video2"
+      },
+      "showInCustom": "station",
+      "width": "half",
+      "height": "medium"
+    },
+    {
+      "url": "https://lionwaurich.github.io/SoftwareentwicklungES24/index.html",
+      "config": "",
+      "studentConfig": "",
+      "teacherConfig": "",
+      "stationConfig": "",
+      "showInCustom": "*",
+      "width": "half",
+      "height": "tall"
+    },
+    {
+      "url": "https://edrys-labs.github.io/module-editor/index.html",
+      "config": {
+        "editorText": "#include <Arduino.h>\n#include <SoftwareSerial.h>\n\n// SoftwareSerial Pins (10 und 11 können beliebig geändert werden)\nSoftwareSerial mySerial(10, 11); // RX, TX\n\nvoid setup() {\n  // Öffne die Hardware-Serial-Kommunikation mit 115200 Baud für die Kommunikation mit dem PC\n  Serial.begin(115200);\n\n  // Öffne die Software-Serial-Kommunikation mit 115200 Baud für die Kommunikation mit dem Raspberry Pi\n  mySerial.begin(115200);\n\n  // Warte darauf, dass die serielle Verbindung verfügbar wird\n  while (!Serial) {\n    ; // Warte auf die Verbindung\n  }\n\n  // Senden einer initialen Nachricht an den Benutzer\n  Serial.println(\"Arduino bereit. Bitte geben Sie den Zustand ein:\");\n}\n\nvoid loop() {\n  // Prüfe, ob Daten vom seriellen Monitor verfügbar sind\n  if (Serial.available() > 0) {\n    // Lese die Eingabe vom seriellen Monitor\n    String input = Serial.readStringUntil('\\n');\n    input.trim(); // Entferne etwaige Whitespace- oder Steuerzeichen\n\n    // Debugging-Ausgabe\n    Serial.print(\"Empfangene Eingabe: \");\n    Serial.println(input);\n\n    // Überprüfe die Eingabe\n    if (input.equalsIgnoreCase(\"q\")) {\n      // Beenden der Schleife, wenn 'q' eingegeben wird\n      Serial.println(\"Beenden des Programms...\");\n      mySerial.println(\"q\");\n      mySerial.flush(); // Ensure all data is sent\n      while(true) {}\n    }\n\n    // Sende den eingegebenen Zustand an den Raspberry Pi\n    mySerial.println(input);\n    mySerial.flush(); // Ensure all data is sent\n\n    // Bestätige die Eingabe im Terminal\n    Serial.println(\"Zustand gesendet: \" + input);\n    Serial.println(\"Bitte nächsten Zustand eingeben oder 'q' zum Beenden:\");\n  }\n\n  // Eine kleine Verzögerung, um das Polling zu verlangsamen\n  delay(100);\n}\n",
+        "runCommand": "execute",
+        "language": "cpp",
+        "theme": "light"
+      },
+      "studentConfig": "",
+      "teacherConfig": "",
+      "stationConfig": "",
+      "showInCustom": "*station",
+      "width": "full",
+      "height": "tall"
+    },
+    {
+      "url": "https://edrys-labs.github.io/module-pyxtermjs/index.html",
+      "config": "",
+      "studentConfig": "",
+      "teacherConfig": "",
+      "stationConfig": {
+        "server": "http://localhost:5000/pty",
+        "execute": "execute",
+        "script": "echo $CODE | base64 --decode > SEES24.ino\narduino-cli sketch new SEES24\nolddir=$(pwd)\nmv SEES24.ino SEES24\ncd SEES24\narduino-cli board attach -p /dev/ttyACM0 -b arduino:avr:uno\ncd $olddir\narduino-cli lib install \"SoftwareSerial\"\narduino-cli compile -b arduino:avr:uno SEES24 && arduino-cli upload -p /dev/ttyACM0 -b arduino:avr:uno SEES24 && arduino-cli monitor -p /dev/ttyACM0 --config baudrate=115200\n",
+        "enable": {
+          "teacher": true,
+          "student": true
+        }
+      },
+      "showInCustom": "*station",
+      "width": "full",
+      "height": "tall"
+    },
+    {
+      "url": "https://edrys-labs.github.io/module-liascript/",
+      "config": {
+        "course": "https://raw.githubusercontent.com/lionwaurich/SoftwareentwicklungES24/main/Lia1.md"
+      },
+      "studentConfig": "",
+      "teacherConfig": "",
+      "stationConfig": "",
+      "showInCustom": "lobby",
+      "width": "full",
+      "height": "huge"
+    }
+  ]
+}
