@@ -1,1 +1,22 @@
-Hallo Welt
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="description" content="Ein Beispielmodul für Edrys">
+    <meta name="show-in" content="*">
+    <title>Beispielmodul</title>
+    <script src="https://edrys-org.github.io/edrys/module/edrys.js"></script>
+</head>
+<body>
+    <h1>Willkommen zu meinem Beispielmodul!</h1>
+    <script>
+        Edrys.onReady(() => {
+            console.log("Modul ist geladen!");
+        });
+
+        Edrys.onUpdate(() => {
+            console.log("Etwas hat sich in der Klasse geändert");
+        });
+    </script>
+</body>
+</html>
