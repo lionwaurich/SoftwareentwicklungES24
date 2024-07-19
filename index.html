@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="de">
 <head>
   <meta charset="UTF-8">
   <title>README Viewer</title>
@@ -18,7 +18,7 @@
   </style>
 </head>
 <body>
-  <div id="content">Loading...</div>
+  <div id="content">Lädt...</div>
   <script>
     fetch('https://raw.githubusercontent.com/lionwaurich/SoftwareentwicklungES24/main/README.md')
       .then(response => response.text())
@@ -26,8 +26,8 @@
         document.getElementById('content').innerHTML = marked.parse(text);
       })
       .catch(error => {
-        document.getElementById('content').innerHTML = 'Error loading README.md';
-        console.error('Error fetching the README.md file:', error);
+        document.getElementById('content').innerHTML = 'Fehler beim Laden der README.md';
+        console.error('Fehler beim Abrufen der README.md Datei:', error);
       });
   </script>
 </body>
