@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8">
+  <title>README Viewer</title>
+  <meta name="description" content="README Viewer Module">
+  <meta name="show-in" content="*">
+  <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 20px;
+    }
+    #content {
+      max-width: 800px;
+      margin: auto;
+    }
+  </style>
+</head>
+<body>
+  <div id="content">Lädt...</div>
+  <script>
+    fetch('https://raw.githubusercontent.com/lionwaurich/SoftwareentwicklungES24/main/README.md')
+      .then(response => {
+        if (!response.ok) {
+          throw new Error('Netzwerkantwort war nicht ok');
+        }
+        return response.text();
+      })
+      .then(text => {
+        document.getElementById('content').innerHTML = marked.parse(text);
+      })
+      .catch(error => {
+        document.getElementById('content').innerHTML = 'Fehler beim Laden der Lia.md: ' + error.message;
+        console.error('Fehler beim Abrufen der Lia.md Datei:', error);
+      });
+  </script>
+</body>
+</html>
